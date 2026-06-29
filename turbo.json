@@ -1,0 +1,50 @@
+{
+  // Turborepo 配置文件的 JSON Schema,用于 IDE 智能提示和校验
+  "$schema": "https://turbo.build/schema.json",
+  // 全局依赖:当这些文件变化时,所有 task 缓存失效
+  // 这里指定所有 .env.*local 文件(如 .env.local、.env.development.local)
+  // 一旦环境变量变化,所有构建/测试都需要重新执行
+  "globalDependencies": ["**/.env.*local"],
+  // 任务定义:每个 task 对应一个 package.json 中的 script
+  "tasks": {
+    // build 任务:构建各 package/app
+    "build": {
+      // 依赖当前包所依赖的包先完成 build(^ 表示向上依赖)
+      // 例如 web 依赖 shared,则 shared 必须先 build 完成,web 才开始 build
+      "dependsOn": ["^build"],
+      // 构建产物输出目录,这些目录的内容会被 Turbo 缓存
+      // dist/** — TypeScript/通用构建产物
+      // .next/** — Next.js 构建产物(预留,当前项目用 Vite)
+      "outputs": ["dist/**", ".next/**"]
+    },
+    // dev 任务:启动开发服务器(热更新)
+    "dev": {
+      // 不缓存开发模式输出(每次都重新启动)
+      "cache": false,
+      // 长驻任务:进程持续运行,不会被 Turbo 视为"完成"
+      // 允许多个 app 的 dev 任务并行运行
+      "persistent": true
+    },
+    // lint 任务:运行 ESLint 代码检查
+    "lint": {
+      // 依赖上游包的 build 完成(因为 lint 可能需要类型信息)
+      "dependsOn": ["^build"]
+    },
+    // typecheck 任务:运行 tsc 类型检查(不产出文件)
+    "typecheck": {
+      // 依赖上游包的 build 完成,以便引用其 .d.ts 声明文件
+      "dependsOn": ["^build"]
+    },
+    // test 任务:运行测试套件(Vitest)
+    "test": {
+      // 依赖 build 完成(测试可能需要导入构建后的代码)
+      "dependsOn": ["build"],
+      // 测试输入文件:只有这些文件变化时才重新运行测试
+      // src/** — 源码目录
+      // test/** — 测试目录
+      // **/*.test.* — 任意位置的 .test.ts/.test.tsx 等测试文件
+      // **/*.spec.* — 任意位置的 .spec.ts/.spec.tsx 等规格测试文件
+      "inputs": ["src/**", "test/**", "**/*.test.*", "**/*.spec.*"]
+    }
+  }
+}

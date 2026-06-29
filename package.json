@@ -1,0 +1,39 @@
+{
+  "name": "agent-platform",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "build": "turbo build",
+    "dev": "turbo dev --parallel",
+    "lint": "turbo lint",
+    "typecheck": "turbo typecheck",
+    "test": "turbo test",
+    "format": "prettier --write \"**/*.{ts,tsx,md,json}\"",
+    "format:check": "prettier --check \"**/*.{ts,tsx,md,json}\"",
+    "spellcheck": "cspell \"**/*.{ts,tsx,md}\"",
+    "changeset": "changeset",
+    "changeset:version": "changeset version",
+    "prepare": "husky"
+  },
+  "devDependencies": {
+    "@agent-platform/eslint-config": "workspace:*",
+    "@changesets/cli": "^2.29.0",
+    "eslint": "10.6.0",
+    "turbo": "2.10.0",
+    "prettier": "3.9.1",
+    "cspell": "10.0.1",
+    "husky": "9.1.7",
+    "lint-staged": "17.0.8",
+    "typescript": "6.0.3"
+  },
+  "packageManager": "pnpm@11.9.0",
+  "lint-staged": {
+    "*.{ts,tsx}": [
+      "eslint --fix",
+      "prettier --write"
+    ],
+    "*.{md,json,css}": [
+      "prettier --write"
+    ]
+  }
+}

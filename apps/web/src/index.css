@@ -1,0 +1,94 @@
+@import "tailwindcss";
+
+body {
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+}
+
+
+
+
+
+/* TipTap placeholder */
+.ProseMirror p.is-editor-empty:first-child::before {
+  color: #adb5bd;
+  content: attr(data-placeholder);
+  float: left;
+  height: 0;
+  pointer-events: none;
+}
+
+/* Markdown rendered content */
+.markdown-body {
+  word-break: break-word;
+  overflow-wrap: break-word;
+}
+.markdown-body h1 { font-size: 1.25em; font-weight: 700; margin: 0.75em 0 0.35em; }
+.markdown-body h2 { font-size: 1.15em; font-weight: 700; margin: 0.7em 0 0.3em; }
+.markdown-body h3 { font-size: 1.05em; font-weight: 600; margin: 0.6em 0 0.25em; }
+.markdown-body h4,
+.markdown-body h5,
+.markdown-body h6 { font-size: 1em; font-weight: 600; margin: 0.5em 0 0.2em; }
+.markdown-body p { margin: 0.4em 0; }
+.markdown-body ul,
+.markdown-body ol { margin: 0.3em 0; padding-left: 1.5em; }
+.markdown-body li { margin: 0.15em 0; }
+.markdown-body li > p { margin: 0; }
+.markdown-body strong { font-weight: 600; }
+.markdown-body em { font-style: italic; }
+.markdown-body code {
+  font-family: "Cascadia Code", "Fira Code", "JetBrains Mono", ui-monospace, monospace;
+  font-size: 0.88em;
+  background: #eaeaea;
+  padding: 0.15em 0.35em;
+  border-radius: 0.25em;
+}
+.markdown-body pre {
+  margin: 0.5em 0;
+  overflow-x: auto;
+  background: #1e1e2e;
+  color: #cdd6f4;
+  border-radius: 0.5em;
+  padding: 0.75em 1em;
+  font-size: 0.8em;
+  line-height: 1.5;
+}
+.markdown-body pre code {
+  background: transparent;
+  padding: 0;
+  border-radius: 0;
+  font-size: inherit;
+}
+.markdown-body a { color: #6366f1; text-decoration: underline; }
+.markdown-body a:hover { color: #4f46e5; }
+.markdown-body blockquote {
+  margin: 0.4em 0;
+  padding-left: 0.75em;
+  border-left: 3px solid #6366f1;
+  color: #666;
+}
+.markdown-body hr { margin: 0.75em 0; border: none; border-top: 1px solid #e8e8ec; }
+.markdown-body table {
+  margin: 0.5em 0;
+  border-collapse: collapse;
+  width: 100%;
+  font-size: 0.88em;
+}
+.markdown-body th,
+.markdown-body td {
+  border: 1px solid #e0e0e0;
+  padding: 0.35em 0.6em;
+  text-align: left;
+}
+.markdown-body th { background: #f5f6fa; font-weight: 600; }
+.markdown-body img { max-width: 100%; border-radius: 0.5em; }
+/* Streaming "thinking" pulse */
+@keyframes thinking-pulse {
+  0%, 100% { opacity: 0.35; }
+  50% { opacity: 1; }
+}
+.streaming-cursor {
+  display: inline-block;
+  animation: thinking-pulse 2.3s ease-in-out infinite;
+  color: #1A1A2E;
+}

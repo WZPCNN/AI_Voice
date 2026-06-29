@@ -1,0 +1,42 @@
+{
+  // 编译选项:控制 TypeScript 编译器的行为
+  "compilerOptions": {
+    // 启用所有严格类型检查选项(strictNullChecks、strictFunctionTypes、strictPropertyInitialization 等)
+    // 有助于在编译期发现潜在的类型错误,提升代码质量
+    "strict": true,
+    // 编译目标:ES2023,指定编译后的 JavaScript 使用的 ECMAScript 版本
+    // ES2023 支持 Array.findLast、Hashbang 语法等新特性
+    "target": "ES2023",
+    // 模块系统:ESNext,使用最新的 ES 模块标准(import/export)
+    "module": "ESNext",
+    // 模块解析策略:bundler,适配现代打包工具(Vite、Turbopack、esbuild 等)
+    // 比传统 node 策略更宽松,支持 exports 字段和条件导入
+    "moduleResolution": "bundler",
+    // 编译时包含的类型库:ES2023,提供 Array.findLast、toSorted 等内置 API 类型定义
+    "lib": ["ES2023"],
+    // 跳过第三方库(.d.ts)的类型检查,加快编译速度
+    // 仅检查项目自身代码,不深究依赖包内部的类型问题
+    "skipLibCheck": true,
+    // 允许 ES 模块互操作:开启后可用 `import x from 'cjs-module'` 语法导入 CommonJS 模块
+    "esModuleInterop": true,
+    // 强制文件名大小写一致性,避免在大小写不敏感的文件系统(Windows/macOS)上
+    // 引入在 Linux(大小写敏感)上会失败的导入错误
+    "forceConsistentCasingInFileNames": true,
+    // 允许导入 JSON 文件作为模块(import pkg from './package.json')
+    "resolveJsonModule": true,
+    // 隔离模块:每个文件可独立编译,要求每个文件显式 import/export 类型
+    // 适配 esbuild、swc 等单文件转译工具的约束
+    "isolatedModules": true,
+    // 生成 .d.ts 类型声明文件,供其他包消费(对 monorepo 内部包互引特别重要)
+    "declaration": true,
+    // 生成 .d.ts.map 源映射文件,允许 IDE 从 .d.ts 跳转回 .ts 源码
+    "declarationMap": true,
+    // 生成 .js.map 源映射文件,便于在浏览器/Node 中调试编译后的代码
+    "sourceMap": true
+  },
+  // 编译排除项:这些目录不参与类型检查和编译
+  // node_modules — 第三方依赖,无需编译
+  // dist — 构建产物目录,避免循环编译
+  // .turbo — Turborepo 缓存目录
+  "exclude": ["node_modules", "dist", ".turbo"]
+}
