@@ -27,6 +27,10 @@ import json
 import asyncio
 # os — 标准库,读取环境变量
 import os
+
+# 确保本地服务不走代理（httpx 默认会读取系统代理设置）
+if "NO_PROXY" not in os.environ:
+    os.environ["NO_PROXY"] = "localhost,127.0.0.1"
 # Redis — redis-py 的异步客户端
 from redis.asyncio import Redis
 # AgentRunner — ReAct Agent 运行器

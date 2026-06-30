@@ -5,7 +5,6 @@ import { useCallback } from 'react';
 import { useSessionStore } from '../store/sessionStore';
 import { useChatStore } from '../store/chatStore';
 import { api } from '../lib/api';
-import type { Message } from '@ai-voice/shared';
 
 export function useConversations() {
   const conversations = useSessionStore((s) => s.conversations);
@@ -25,8 +24,7 @@ export function useConversations() {
       selectSession(id);
       setCurrentSessionId(id);
       try {
-        const raw = await api.sessions.messages(id);
-        const msgs: Message[] = Array.isArray(raw) ? raw : (raw.data ?? []);
+        const msgs = await api.sessions.messages(id);
         loadMessages(msgs);
       } catch {
         clearMessages();

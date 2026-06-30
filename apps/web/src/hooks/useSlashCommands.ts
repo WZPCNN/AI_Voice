@@ -2,6 +2,7 @@
 // 封装命令过滤、键盘导航(ArrowUp/Down/Enter/Escape)、执行
 // 从 uiStore 读取 slashQuery/slashVisible/selectedIdx/modes
 import { useMemo } from 'react';
+import type { Editor } from '@tiptap/react';
 import { useUIStore } from '../store/uiStore';
 import { COMMANDS, type CommandItem } from '../components/slashCommands';
 import type { AppMode } from '@ai-voice/shared';
@@ -35,10 +36,22 @@ export function useSlashCommands() {
     );
   }, [slashQuery]);
 
-  /** executeCommand — 执行选中的命令(切换对应模式) */
-  const executeCommand = (cmd: CommandItem) => {
+  /** executeCommand — 执行选中的命令(切换对应模式),并清除编辑器中的斜杠文本 */
+  const executeCommand = (cmd: CommandItem, editor?: Editor | null) => {
     const targetMode = CMD_MODE_MAP[cmd.id];
     if (targetMode) toggleMode(targetMode);
+    if (editor && !editor.isDestroyed) {
+      const { state } = editor;
+      const { $head } = state.selection;
+      const text = $head.parent.textContent || '';
+      const slashIdx = text.lastIndexOf('/');
+      if (slashIdx >= 0) {
+        const cursorPos = $head.pos;
+        const parentOffset = $head.parentOffset;
+        const slashPos = cursorPos - parentOffset + slashIdx;
+        editor.chain().deleteRange({ from: slashPos, to: cursorPos }).run();
+      }
+    }
     resetSlash();
   };
 
@@ -46,11 +59,11 @@ export function useSlashCommands() {
    * handleKeyDown — 键盘事件处理(命令面板显示时拦截)
    * @returns true 表示已拦截,调用方应阻止默认行为
    */
-  const handleKeyDown = (event: KeyboardEvent): boolean => {
+  const handleKeyDown = (event: KeyboardEvent, editor?: Editor | null): boolean => {
     if (!slashVisible || filteredCmds.length === 0) return false;
     if (event.key === 'Enter') {
       event.preventDefault();
-      executeCommand(filteredCmds[Math.min(selectedIdx, filteredCmds.length - 1)]);
+      executeCommand(filteredCmds[Math.min(selectedIdx, filteredCmds.length - 1)], editor);
       return true;
     }
     if (event.key === 'ArrowDown') {
@@ -71,5 +84,32 @@ export function useSlashCommands() {
     return false;
   };
 
-  return { filteredCmds, executeCommand, handleKeyDown, slashVisible, slashQuery, selectedIdx };
+  /** removeSlash — 仅清除编辑器中的斜杠文本,不执行命令 */
+  const removeSlash = (editor?: Editor | null) => {
+    if (!editor || editor.isDestroyed) {
+      resetSlash();
+      return;
+    }
+    const { state } = editor;
+    const { $head } = state.selection;
+    const text = $head.parent.textContent || '';
+    const slashIdx = text.lastIndexOf('/');
+    if (slashIdx >= 0) {
+      const cursorPos = $head.pos;
+      const parentOffset = $head.parentOffset;
+      const slashPos = cursorPos - parentOffset + slashIdx;
+      editor.chain().deleteRange({ from: slashPos, to: cursorPos }).run();
+    }
+    resetSlash();
+  };
+
+  return {
+    filteredCmds,
+    executeCommand,
+    handleKeyDown,
+    removeSlash,
+    slashVisible,
+    slashQuery,
+    selectedIdx,
+  };
 }

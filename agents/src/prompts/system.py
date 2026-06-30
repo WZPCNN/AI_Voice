@@ -13,7 +13,7 @@ def compose_system_prompt(
     identity: str = IDENTITY_RULES,
     capabilities: str = CAPABILITIES,
     tool_guide: str = TOOL_GUIDE,
-    intro: str = "你是智能助手，一个专业的 AI 智能体平台助手。",
+    intro: str = "你是 AI Voice 智能助手，一个专业的 AI 全能助手。",
 ) -> str:
     """组合系统提示词的各部分为完整文本。
 

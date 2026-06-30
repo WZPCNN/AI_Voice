@@ -82,7 +82,7 @@ export default function ChatPage() {
       attributes: { class: 'outline-none text-[14px] text-[#1A1A2E]' },
       handleKeyDown: (_view: unknown, event: KeyboardEvent) => {
         // 命令面板显示时,交给 useSlashCommands 处理
-        if (slashKeyDownRef.current(event)) return true;
+        if (slashKeyDownRef.current(event, editorRef.current)) return true;
         // Enter 发送,Shift/Alt+Enter 换行
         if (event.key === 'Enter' && !event.shiftKey && !event.altKey) {
           event.preventDefault();
@@ -169,7 +169,7 @@ export default function ChatPage() {
   return (
     <main className="flex flex-1 flex-col min-w-0 bg-[#FFFFFF]">
       <header className="flex items-center justify-between border-b border-[#EBECF0] h-16 px-6 flex-shrink-0">
-        <span className="text-[15px] font-semibold text-[#1A1A2E]">智能助手</span>
+        <span className="text-[15px] font-semibold text-[#1A1A2E]">AI Voice Assistant</span>
         <span className="text-[11px] text-[#999]">
           {selectedConfig
             ? `${selectedConfig.modelProvider}/${selectedConfig.modelName}`

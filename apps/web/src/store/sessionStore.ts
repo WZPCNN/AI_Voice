@@ -25,7 +25,7 @@ export const useSessionStore = create<SessionState>((set) => ({
   loadConversations: async () => {
     try {
       const raw = await api.sessions.list();
-      const items: Conversation[] = Array.isArray(raw) ? raw : (raw.data ?? []);
+      const items: Conversation[] = raw;
       set({ conversations: items });
     } catch {
       /* ignore */

@@ -70,15 +70,19 @@ function PlanSection({ planSteps, agentPlans, collapseAgents }: PlanSectionProps
     }));
 
     return (
-      <div className="mt-2 border-t border-[#E8E8EC] pt-2">
-        {/* 标题行:Sparkles 图标 + "智能体协作" + Agent 数量 */}
-        <div className="flex items-center gap-1 text-[10px] text-[#999] mb-2">
-          <Sparkles size={11} />
-          <span className="font-semibold uppercase tracking-[0.1em]">智能体协作</span>
-          <span className="text-[#6366F1]">· {cards.length} 个智能体</span>
+      <div className="mt-3 rounded-2xl bg-gradient-to-br from-[#F8F9FC] to-[#F0F1F5] p-3 border border-[#E8E8EC]">
+        <div className="flex items-center gap-2 mb-3">
+          <div className="flex items-center justify-center w-5 h-5 rounded-full bg-gradient-to-br from-[#6366F1] to-[#5558E6] shadow-sm">
+            <Sparkles size={11} className="text-white" />
+          </div>
+          <span className="text-[11px] font-semibold text-[#1A1A2E] uppercase tracking-[0.1em]">
+            智能体协作
+          </span>
+          <span className="text-[10px] text-[#6366F1] font-medium bg-[#6366F118] px-2 py-0.5 rounded-full">
+            {cards.length} 个智能体
+          </span>
         </div>
-        {/* 横向滚动容器:flex + overflow-x-auto */}
-        <div className="flex gap-2 overflow-x-auto pb-1">
+        <div className="flex gap-3 overflow-x-auto pb-2 snap-x snap-mandatory">
           {cards.map((card) => (
             <AgentCard
               key={card.name}

@@ -21,9 +21,8 @@ function McpServersPanel({ onNavigateSettings }: { onNavigateSettings: () => voi
     <div className="flex items-center gap-2 rounded-md border border-[#8B5CF6] bg-[#8B5CF618] px-2.5 py-1">
       <Network size={12} className="text-[#8B5CF6]" />
       <span className="text-[11px] font-medium text-[#8B5CF6]">
-        {activeCount}/{servers.length} 个 MCP 服务器活跃
+        {servers.length === 0 ? '未配置 MCP 服务器' : `${activeCount}/${servers.length} 个服务器活跃`}
       </span>
-      {servers.length === 0 && <span className="text-[10px] text-[#999]">未配置服务器</span>}
       <button
         type="button"
         onClick={onNavigateSettings}

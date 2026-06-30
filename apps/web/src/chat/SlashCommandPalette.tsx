@@ -1,6 +1,7 @@
 // SlashCommandPalette — 斜杠命令面板组件
 // 显示过滤后的命令列表,支持键盘导航高亮和鼠标点击
 import { memo } from 'react';
+import { type Editor } from '@tiptap/react';
 import { type CommandItem } from '../components/slashCommands';
 import type { AppMode } from '@ai-voice/shared';
 
@@ -9,8 +10,9 @@ interface SlashCommandPaletteProps {
   cmds: CommandItem[];
   selectedIdx: number;
   onSelectIdx: (i: number) => void;
-  onExecute: (cmd: CommandItem) => void;
+  onExecute: (cmd: CommandItem, editor: Editor | null) => void;
   modes: AppMode[];
+  editor: Editor | null;
 }
 
 function SlashCommandPalette({
@@ -20,6 +22,7 @@ function SlashCommandPalette({
   onSelectIdx,
   onExecute,
   modes,
+  editor,
 }: SlashCommandPaletteProps) {
   if (cmds.length === 0) return null;
 
@@ -62,7 +65,7 @@ function SlashCommandPalette({
               }
               onClick={(e) => {
                 e.preventDefault();
-                onExecute(cmd);
+                onExecute(cmd, editor);
               }}
               onMouseEnter={() => onSelectIdx(i)}
             >
@@ -85,20 +88,24 @@ function SlashCommandPalette({
           );
         })}
       </div>
-      <div className="flex gap-3 border-t border-[#E8E8EC] bg-[#F8F9FC] px-4 py-2 text-[10px] text-[#999]">
-        <span>
-          <kbd className="rounded border border-[#E8E8EC] bg-white px-1 py-0.5 text-[#666]">↑↓</kbd>{' '}
-          导航
+      <div className="flex gap-3 border-t border-[#E8E8EC] bg-[#F8F9FC] px-4 py-2.5 text-[10px] text-[#999]">
+        <span className="flex items-center gap-1">
+          <kbd className="rounded border border-[#E8E8EC] bg-white px-1.5 py-0.5 text-[#666] font-mono">
+            ↑↓
+          </kbd>
+          <span>导航</span>
         </span>
-        <span>
-          <kbd className="rounded border border-[#E8E8EC] bg-white px-1 py-0.5 text-[#666]">↵</kbd>{' '}
-          选择
+        <span className="flex items-center gap-1">
+          <kbd className="rounded border border-[#E8E8EC] bg-white px-1.5 py-0.5 text-[#666] font-mono">
+            ↵
+          </kbd>
+          <span>选择</span>
         </span>
-        <span>
-          <kbd className="rounded border border-[#E8E8EC] bg-white px-1 py-0.5 text-[#666]">
+        <span className="flex items-center gap-1">
+          <kbd className="rounded border border-[#E8E8EC] bg-white px-1.5 py-0.5 text-[#666] font-mono">
             esc
-          </kbd>{' '}
-          关闭
+          </kbd>
+          <span>关闭</span>
         </span>
       </div>
     </div>

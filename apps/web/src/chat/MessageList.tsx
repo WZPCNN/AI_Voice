@@ -2,7 +2,16 @@
 // 渲染空状态欢迎页 + 错误提示条 + 消息列表
 // 从 chatStore 读取消息和计划状态,避免 ChatPage 直接管理
 import { memo, useMemo, type RefObject } from 'react';
-import { Sparkles, AlertCircle, Code2, SearchCheck, PenTool, Globe, Terminal } from 'lucide-react';
+import {
+  Sparkles,
+  AlertCircle,
+  Code2,
+  SearchCheck,
+  PenTool,
+  Globe,
+  Terminal,
+  X,
+} from 'lucide-react';
 import { useChatStore } from '../store/chatStore';
 import type { Editor } from '@tiptap/react';
 import MessageBubble from './MessageBubble';
@@ -38,16 +47,24 @@ function MessageList({ endRef, onRetry, editor }: MessageListProps) {
     <div className="flex-1 overflow-y-auto px-6 py-6 space-y-6">
       {/* 空状态:欢迎页 + 快捷功能按钮 */}
       {isEmpty && (
-        <div className="flex flex-col items-center justify-center h-full text-center">
-          <Sparkles size={36} className="text-[#6366F1] mb-4" />
-          <h2 className="text-[18px] font-semibold text-[#1A1A2E] mb-1">有什么可以帮你的?</h2>
-          <p className="text-[13px] text-[#999] mb-6">输入 / 查看可用命令</p>
+        <div className="flex flex-col items-center justify-center h-full text-center px-6">
+          <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-[#6366F1] to-[#8B5CF6] flex items-center justify-center mb-4 shadow-lg">
+            <Sparkles size={32} className="text-white" />
+          </div>
+          <h2 className="text-[20px] font-semibold text-[#1A1A2E] mb-2">有什么可以帮你的?</h2>
+          <p className="text-[13px] text-[#999] mb-6 max-w-sm">
+            输入消息开始对话，或输入{' '}
+            <kbd className="px-1.5 py-0.5 rounded border border-[#E8E8EC] bg-white text-[11px] font-mono">
+              /
+            </kbd>{' '}
+            查看可用命令
+          </p>
           <div className="flex gap-2 flex-wrap justify-center max-w-md">
             {QUICK_ACTIONS.map((chip) => (
               <button
                 key={chip.label}
                 type="button"
-                className="inline-flex items-center gap-1.5 rounded-full border border-[#EBECF0] px-3 py-1.5 text-[12px] text-[#1A1A2E] hover:bg-[#F5F6FA] transition-colors"
+                className="inline-flex items-center gap-1.5 rounded-full border border-[#EBECF0] px-3.5 py-2 text-[12px] text-[#1A1A2E] hover:bg-[#F5F6FA] hover:border-[#D4D6DD] transition-all shadow-sm hover:shadow"
                 onClick={() => {
                   editor?.commands.setContent(chip.label + ' ');
                   editor?.commands.focus();
@@ -62,14 +79,18 @@ function MessageList({ endRef, onRetry, editor }: MessageListProps) {
 
       {/* 错误提示条 */}
       {sendError && (
-        <div className="mx-auto max-w-2xl flex items-center gap-2 rounded-lg bg-[#FEF2F2] border border-[#FECACA] px-3.5 py-2.5 text-[12px] text-[#DC2626]">
-          <AlertCircle size={14} className="flex-shrink-0" />
-          <span className="flex-1">{sendError}</span>
+        <div className="mx-auto max-w-2xl flex items-start gap-2.5 rounded-xl bg-gradient-to-r from-[#FEF2F2] to-[#FFF5F5] border border-[#FECACA] px-4 py-3 shadow-sm">
+          <AlertCircle size={15} className="flex-shrink-0 text-[#EF4444] mt-0.5" />
+          <div className="flex-1 min-w-0">
+            <p className="text-[12px] text-[#DC2626] font-medium mb-0.5">发送失败</p>
+            <p className="text-[11px] text-[#999] leading-relaxed">{sendError}</p>
+          </div>
           <button
-            className="text-[11px] underline hover:no-underline"
+            className="flex-shrink-0 rounded-lg p-1 text-[#999] hover:text-[#DC2626] hover:bg-[#FEE2E2] transition-colors"
             onClick={() => setSendError(null)}
+            title="关闭提示"
           >
-            关闭
+            <X size={12} />
           </button>
         </div>
       )}

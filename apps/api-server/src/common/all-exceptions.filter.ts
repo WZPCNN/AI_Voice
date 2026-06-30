@@ -53,7 +53,11 @@ export class AllExceptionsFilter implements ExceptionFilter {
         message = res;
       } else if (typeof res === 'object' && res !== null) {
         const msg = (res as { message?: unknown }).message;
-        if (typeof msg === 'string') message = msg;
+        if (typeof msg === 'string') {
+          message = msg;
+        } else if (Array.isArray(msg) && msg.length > 0) {
+          message = msg.join(', ');
+        }
         code = (res as { code?: string }).code ?? exception.name;
       }
     } else if (isPrismaError(exception)) {

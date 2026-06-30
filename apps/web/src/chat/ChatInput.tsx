@@ -1,7 +1,7 @@
 // ChatInput — 聊天输入区组件
 // 封装 Tiptap 编辑器、图片上传、模式徽章、模型选择、斜杠命令面板、发送/停止按钮
 // 自包含设计:直接从 uiStore/chatStore 读取状态,减少 props 传递
-import { memo, useRef } from 'react';
+import { memo, useRef, useEffect } from 'react';
 import { Send, Square, ImageIcon, X } from 'lucide-react';
 import { EditorContent, type Editor } from '@tiptap/react';
 import { useSlashCommands } from '../hooks/useSlashCommands';
@@ -21,7 +21,7 @@ interface ChatInputProps {
 }
 
 function ChatInput({ editor, onSend, onStop, onNavigateSettings }: ChatInputProps) {
-  const { filteredCmds, slashVisible, slashQuery, selectedIdx, executeCommand } =
+  const { filteredCmds, slashVisible, slashQuery, selectedIdx, executeCommand, removeSlash } =
     useSlashCommands();
 
   const images = useUIStore((s) => s.images);
@@ -34,8 +34,23 @@ function ChatInput({ editor, onSend, onStop, onNavigateSettings }: ChatInputProp
   const streaming = useChatStore((s) => s.streaming);
 
   const fileRef = useRef<HTMLInputElement>(null);
+  const footerRef = useRef<HTMLElement>(null);
+
+  // 点击非输入框区域时,隐藏斜杠命令面板并删除"/"
+  useEffect(() => {
+    if (!slashVisible) return;
+    const handler = (e: MouseEvent) => {
+      if (footerRef.current && !footerRef.current.contains(e.target as Node)) {
+        removeSlash(editor);
+      }
+    };
+    document.addEventListener('mousedown', handler);
+    return () => document.removeEventListener('mousedown', handler);
+  }, [slashVisible, editor, removeSlash]);
 
   const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
+    // 点击上传图片按钮时,隐藏斜杠命令面板并删除"/"
+    if (slashVisible) removeSlash(editor);
     const files = e.target.files;
     if (!files) return;
     for (const f of Array.from(files)) {
@@ -47,7 +62,7 @@ function ChatInput({ editor, onSend, onStop, onNavigateSettings }: ChatInputProp
   };
 
   return (
-    <footer className="border-t border-[#EBECF0] bg-[#FFFFFF] px-6 pt-4 pb-5">
+    <footer ref={footerRef} className="border-t border-[#EBECF0] bg-[#FFFFFF] px-6 pt-4 pb-5">
       <div className="relative max-w-[81rem] mx-auto">
         {slashVisible && filteredCmds.length > 0 && (
           <SlashCommandPalette
@@ -57,6 +72,7 @@ function ChatInput({ editor, onSend, onStop, onNavigateSettings }: ChatInputProp
             onSelectIdx={setSelectedIdx}
             onExecute={executeCommand}
             modes={modes}
+            editor={editor}
           />
         )}
         <div
@@ -81,6 +97,7 @@ function ChatInput({ editor, onSend, onStop, onNavigateSettings }: ChatInputProp
                     type="button"
                     className="absolute -right-1.5 -top-1.5 rounded-full bg-[#EF4444] p-0.5 text-white shadow hidden group-hover:block"
                     onClick={() => removeImage(i)}
+                    title="移除图片"
                   >
                     <X size={10} />
                   </button>
@@ -111,7 +128,7 @@ function ChatInput({ editor, onSend, onStop, onNavigateSettings }: ChatInputProp
                       color: MODE_COLORS[m] ?? '#6366F1',
                     }}
                     onClick={() => setModes(modes.filter((x) => x !== m))}
-                    title="点击移除"
+                    title="点击移除此模式"
                   >
                     <span
                       className="h-1.5 w-1.5 rounded-full"
@@ -133,26 +150,36 @@ function ChatInput({ editor, onSend, onStop, onNavigateSettings }: ChatInputProp
               <button
                 type="button"
                 className="rounded-lg p-2 text-[#999] hover:bg-[#F5F6FA] hover:text-[#1A1A2E] transition-colors"
-                onClick={() => fileRef.current?.click()}
-                title="上传图片"
+                onClick={() => {
+                  if (slashVisible) removeSlash(editor);
+                  fileRef.current?.click();
+                }}
+                title="上传图片文件"
               >
                 <ImageIcon size={16} />
               </button>
-              <ModelSelector onAddModel={onNavigateSettings} />
+              <ModelSelector
+                onAddModel={onNavigateSettings}
+                onOpen={() => {
+                  if (slashVisible) removeSlash(editor);
+                }}
+              />
             </div>
             {streaming ? (
               <button
                 type="button"
                 onClick={onStop}
                 className="rounded-lg bg-[#EF4444] hover:bg-[#DC2626] text-white px-4 py-1.5 text-[12px] font-medium flex items-center gap-1.5 transition-colors"
+                title="停止生成回复"
               >
-                <Square size={13} /> 停止
+                <Square size={13} /> 停止生成
               </button>
             ) : (
               <button
                 type="button"
                 onClick={onSend}
                 className="rounded-lg bg-[#6366F1] hover:bg-[#5558E6] text-white px-4 py-1.5 text-[12px] font-medium flex items-center gap-1.5 transition-colors"
+                title="发送消息"
               >
                 <Send size={13} /> 发送
               </button>

@@ -34,41 +34,58 @@ function AgentCard({ agentName, steps, color, collapseAgents }: AgentCardProps) 
   const allDone = steps.length > 0 && steps.every((s) => s.status === 'completed');
 
   return (
-    // 卡片容器:flex-shrink-0 防止被压缩,width/minWidth 固定大小
-    // borderColor 使用 color + "50"(8 位十六进制,50 = 30% 透明度)
-    // scrollSnapAlign: "start" — 横向滚动时吸附对齐到起点
     <div
-      className="flex-shrink-0 rounded-lg border p-2 flex flex-col"
+      className="flex-shrink-0 rounded-2xl border-2 bg-white overflow-hidden shadow-sm transition-all hover:shadow-md flex flex-col"
       style={{
         width: '280px',
         minWidth: '220px',
-        borderColor: color + '50',
+        borderColor: color + '40',
         scrollSnapAlign: 'start',
+        boxShadow: `0 2px 8px ${color}15`,
       }}
     >
-      {/* Agent header. Agent 头部:状态点 + 名称 + 状态文字 */}
       <div
-        className="flex items-center gap-1.5 mb-2 pb-1.5 border-b"
-        style={{ borderColor: color + '30' }}
+        className="flex items-center gap-2 px-3 py-2.5 border-b-2"
+        style={{
+          backgroundColor: color + '18',
+          borderColor: color + '30',
+        }}
       >
-        {/* 状态指示点:正在执行时使用 pulse 动画 */}
         <span
-          className="h-2 w-2 rounded-full flex-shrink-0"
+          className="h-2.5 w-2.5 rounded-full flex-shrink-0 ring-2 ring-opacity-30"
           style={{
             backgroundColor: color,
+            boxShadow: `0 0 0 2px ${color}30`,
             animation: inProgress > 0 ? 'pulse 1.5s infinite' : 'none',
           }}
         />
-        {/* Agent 名称:超长时截断 */}
-        <span className="text-[11px] font-semibold text-[#1A1A2E] truncate">{agentName}</span>
-        {/* 执行中:显示在右侧(ml-auto) */}
-        {inProgress > 0 && <span className="text-[9px] text-[#999] ml-auto">执行中</span>}
-        {/* 全部完成:显示绿色 ✓ */}
-        {allDone && <span className="text-[9px] text-[#10B981] ml-auto">✓ 完成</span>}
+        <span className="text-[12px] font-semibold text-[#1A1A2E] truncate flex-1">
+          {agentName}
+        </span>
+        {inProgress > 0 && (
+          <span className="text-[10px] text-[#6366F1] flex-shrink-0 font-medium flex items-center gap-1">
+            <span className="w-1 h-1 rounded-full bg-[#6366F1] animate-pulse" />
+            处理中
+          </span>
+        )}
+        {allDone && (
+          <span
+            className="text-[10px] font-semibold flex-shrink-0 rounded-full px-2 py-0.5 flex items-center gap-1"
+            style={{ backgroundColor: '#10B98120', color: '#10B981' }}
+          >
+            <svg className="w-2.5 h-2.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={3}
+                d="M5 13l4 4L19 7"
+              />
+            </svg>
+            已完成
+          </span>
+        )}
       </div>
-      {/* Agent body: independent PlanTemplate. Agent 主体:独立的 PlanTemplate */}
-      <div className="flex-1 min-h-0">
-        {/* compact 模式使 PlanTemplate 以紧凑样式渲染(适配卡片宽度) */}
+      <div className="flex-1 min-h-0 px-3 py-2.5 max-h-[200px] overflow-y-auto bg-gradient-to-b from-white to-[#F8F9FC]">
         <PlanTemplate steps={steps} color={color} compact collapseAgents={collapseAgents} />
       </div>
     </div>

@@ -53,17 +53,17 @@ function PlanTemplate({ steps, color, compact, collapseAgents }: PlanTemplatePro
     }
   }, [collapseAgents]);
 
-  // 步骤列表为空时,显示 "Thinking..." 占位
+  // 步骤列表为空时,显示 "正在规划..." 占位
   if (steps.length === 0) {
     return (
-      <div className="text-[10px] text-[#999] text-center py-2">
-        <span className="streaming-cursor">Thinking...</span>
+      <div className="flex items-center justify-center gap-2 text-[11px] text-[#999] py-3 bg-gradient-to-r from-transparent via-[#F0F1F5] to-transparent rounded-lg">
+        <span className="streaming-cursor">正在规划任务步骤...</span>
       </div>
     );
   }
 
   return (
-    <div className="space-y-0.5">
+    <div className="space-y-1">
       {steps.map((step, j) => {
         // 当前步骤是否处于执行中
         const isActive = step.status === 'in_progress';
@@ -75,12 +75,14 @@ function PlanTemplate({ steps, color, compact, collapseAgents }: PlanTemplatePro
         const borderColor = color ? color + '50' : '#E8E8EC';
 
         return (
-          <div key={j}>
+          <div key={j} className="group/step">
             {/* 步骤标题行:点击可切换展开/折叠 */}
             <div
               className={
-                'flex items-center gap-1.5 py-0.5 px-1 rounded cursor-pointer ' +
-                (isActive ? 'bg-white' : 'hover:bg-[#F8F9FC]')
+                'flex items-center gap-2 py-1.5 px-2 rounded-lg cursor-pointer transition-all ' +
+                (isActive
+                  ? 'bg-gradient-to-r from-white to-[#F8F9FC] shadow-sm'
+                  : 'hover:bg-[#F8F9FC] hover:shadow-xs')
               }
               onClick={() => {
                 // 标记用户已手动切换
@@ -89,29 +91,53 @@ function PlanTemplate({ steps, color, compact, collapseAgents }: PlanTemplatePro
                 setExpandedIdx(isExpanded ? null : j);
               }}
             >
-              {/* 步骤状态指示点:完成-绿色、执行中-靛蓝色+脉冲动画、待执行-灰色 */}
-              <span
-                className={
-                  'h-1 w-1 rounded-full flex-shrink-0 ' +
-                  (isDone
-                    ? 'bg-[#10B981]'
-                    : isActive
-                      ? 'bg-[#6366F1] animate-pulse'
-                      : 'bg-[#D4D6DD]')
-                }
-              />
+              {/* 步骤状态指示器 */}
+              <div className="flex-shrink-0 relative">
+                {isDone ? (
+                  <div className="w-4 h-4 rounded-full bg-gradient-to-br from-[#10B981] to-[#059669] flex items-center justify-center shadow-xs">
+                    <svg
+                      className="w-2.5 h-2.5 text-white"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      stroke="currentColor"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth={3}
+                        d="M5 13l4 4L19 7"
+                      />
+                    </svg>
+                  </div>
+                ) : isActive ? (
+                  <div className="w-4 h-4 rounded-full bg-gradient-to-br from-[#6366F1] to-[#8B5CF6] flex items-center justify-center shadow-xs animate-pulse">
+                    <div className="w-1.5 h-1.5 rounded-full bg-white" />
+                  </div>
+                ) : (
+                  <div className="w-4 h-4 rounded-full border-2 border-[#D4D6DD] flex items-center justify-center">
+                    <div className="w-1 h-1 rounded-full bg-[#D4D6DD]" />
+                  </div>
+                )}
+              </div>
               {/* 步骤描述:执行中加粗,完成时灰色,待执行时更浅的灰色 */}
               <span
                 className={
-                  'text-[10px] flex-1 truncate ' +
-                  (isActive ? 'text-[#1A1A2E] font-medium' : isDone ? 'text-[#666]' : 'text-[#999]')
+                  'text-[11px] flex-1 truncate transition-colors ' +
+                  (isActive
+                    ? 'text-[#1A1A2E] font-semibold'
+                    : isDone
+                      ? 'text-[#666] font-medium'
+                      : 'text-[#999]')
                 }
               >
-                {/* compact 模式和其他模式使用相同的展示(保留原始条件分支,便于后续扩展) */}
                 {compact ? j + 1 + '. ' + step.step : j + 1 + '. ' + step.step}
               </span>
               {/* 完成时显示绿色 ✓ */}
-              {isDone && <span className="text-[#10B981] text-[9px] flex-shrink-0">✓</span>}
+              {isDone && (
+                <span className="text-[#10B981] text-[10px] font-bold flex-shrink-0 bg-[#10B98118] px-1.5 py-0.5 rounded-full">
+                  ✓
+                </span>
+              )}
             </div>
             {/* 详情区域:满足以下任一条件时显示
                 1. 当前步骤执行中(isActive)
@@ -125,14 +151,14 @@ function PlanTemplate({ steps, color, compact, collapseAgents }: PlanTemplatePro
                 isDone &&
                 j === lastActiveRef.current)) && (
               <div
-                className="ml-2 pl-2 border-l-2 text-[10px] text-[#999] leading-relaxed max-h-32 overflow-y-auto mt-0.5 markdown-body"
+                className="ml-4 pl-3 border-l-2 text-[11px] text-[#666] leading-relaxed max-h-32 overflow-y-auto mt-1 mb-1 markdown-body bg-gradient-to-r from-[#F8F9FC] to-transparent rounded-r-lg pr-2"
                 style={{ borderColor }}
               >
                 {/* 有详情时用 Markdown 渲染,否则显示 "Thinking..." 流式光标 */}
                 {step.detail ? (
                   <ReactMarkdown>{step.detail}</ReactMarkdown>
                 ) : (
-                  <span className="streaming-cursor">Thinking...</span>
+                  <span className="streaming-cursor text-[#999]">正在分析...</span>
                 )}
               </div>
             )}

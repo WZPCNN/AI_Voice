@@ -24,7 +24,7 @@ export const useConfigStore = create<ConfigState>((set, get) => ({
   loadConfigs: async () => {
     try {
       const raw = await api.configs.list();
-      const items: ModelConfig[] = Array.isArray(raw) ? raw : (raw.data ?? []);
+      const items: ModelConfig[] = raw;
       set({ configs: items });
       // 仅当本地未保存选中配置时,自动选择后端标记为 isSelected 的配置
       if (!localStorage.getItem(LS_SELECTED_CONFIG)) {

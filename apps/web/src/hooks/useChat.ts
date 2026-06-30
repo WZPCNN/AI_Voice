@@ -104,8 +104,23 @@ export function useChat() {
         );
       } catch (err: unknown) {
         const name = (err as { name?: string })?.name;
-        const message = err instanceof Error ? err.message : 'SSE error';
-        if (name !== 'AbortError') setSendError(message);
+        if (name !== 'AbortError') {
+          const message = err instanceof Error ? err.message : 'SSE error';
+          // 友好化错误消息
+          const friendlyMessage =
+            message.includes('Network') || message.includes('fetch')
+              ? '网络连接失败，请检查网络后重试'
+              : message.includes('timeout')
+                ? '请求超时，请稍后重试'
+                : message.includes('500')
+                  ? '服务器暂时不可用，请稍后重试'
+                  : message.includes('401')
+                    ? '登录已过期，请重新登录'
+                    : message.includes('403')
+                      ? '您没有权限执行此操作'
+                      : message;
+          setSendError(friendlyMessage);
+        }
       }
       setStreaming(false);
       setActiveAgents([]);
