@@ -45,3 +45,10 @@ pyproject
 mypy
 QDRANT
 aivoicedb
+metatag
+Segoe
+ciphertext
+BLPOP
+modelcontextprotocol
+autodocs
+conv
