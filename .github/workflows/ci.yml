@@ -146,7 +146,7 @@ jobs:
 
       - name: Run Python tests
         working-directory: ./agents
-        run: uv run pytest
+        run: uv run pytest -m "not e2e"
 
   # ===== 阶段 2: 构建（依赖阶段 1 全部成功）=====
 

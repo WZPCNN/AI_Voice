@@ -136,7 +136,7 @@ export function useChat() {
     setMessages((prev) => {
       const u = [...prev];
       if (u.length > 0 && u[u.length - 1].role === 'assistant') {
-        u[u.length - 1] = { ...u[u.length - 1], interrupted: true };
+        u[u.length - 1] = { ...u[u.length - 1], interrupted: true, interruptReason: 'user' };
       }
       return u;
     });

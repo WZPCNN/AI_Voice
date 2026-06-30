@@ -77,8 +77,10 @@ export interface Message {
   toolCall?: { tool: string; output?: string };
   /** 多智能体模式下,发送消息的 Agent 名称 */
   agent?: string;
-  /** 标记响应是否被用户中断 */
+  /** 标记响应是否被中断 */
   interrupted?: boolean;
+  /** 中断原因:user=用户主动中断,error=异常中断 */
+  interruptReason?: 'user' | 'error';
   /** 元数据(工具名、耗时等) */
   metadata?: Record<string, unknown>;
   /** 创建时间 */

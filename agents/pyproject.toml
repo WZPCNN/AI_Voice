@@ -53,6 +53,9 @@ strict = true
 asyncio_mode = "auto"
 testpaths = ["tests"]
 pythonpath = ["src"]
+markers = [
+    "e2e: marks tests as end-to-end (deselect with '-m \"not e2e\"')",
+]
 
 [pip]
 link-mode = "copy"

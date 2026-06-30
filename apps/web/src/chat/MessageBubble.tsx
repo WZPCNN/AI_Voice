@@ -3,6 +3,7 @@
 import { memo, useMemo } from 'react';
 import { Copy, RefreshCw } from 'lucide-react';
 import ReactMarkdown from 'react-markdown';
+import remarkGfm from 'remark-gfm';
 import PlanSection from './PlanSection';
 import type { Message, PlanStep } from '@ai-voice/shared';
 
@@ -48,7 +49,7 @@ function MessageBubble({
   // 缓存 Markdown 渲染(避免每次重渲染都重新解析)
   const contentNode = useMemo(() => {
     if (!msg.content) return null;
-    return <ReactMarkdown>{msg.content}</ReactMarkdown>;
+    return <ReactMarkdown remarkPlugins={[remarkGfm]}>{msg.content}</ReactMarkdown>;
   }, [msg.content]);
 
   return (
@@ -132,7 +133,9 @@ function MessageBubble({
           <div className="mt-3 flex items-center gap-2 rounded-lg bg-[#FEF2F2] border border-[#FECACA] px-3 py-2">
             <div className="flex items-center gap-1.5 flex-1">
               <div className="w-1.5 h-1.5 rounded-full bg-[#EF4444] animate-pulse" />
-              <p className="text-[11px] text-[#DC2626] font-medium">回复已中断</p>
+              <p className="text-[11px] text-[#DC2626] font-medium">
+                {msg.interruptReason === 'user' ? '用户强制中断' : '模型连接异常，请稍后重试'}
+              </p>
             </div>
             <button
               onClick={onRetry}

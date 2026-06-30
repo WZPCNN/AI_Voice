@@ -101,6 +101,7 @@ async def worker():
     yield w
 
 
+@pytest.mark.e2e
 @pytest.mark.asyncio
 async def test_e2e_exec_mode(worker):
     """端到端测试：exec 模式完整流程。"""
@@ -123,6 +124,7 @@ async def test_e2e_exec_mode(worker):
     print(f"[exec 模式] 前 100 字：{full_response[:100]}...")
 
 
+@pytest.mark.e2e
 @pytest.mark.asyncio
 async def test_e2e_plan_mode(worker):
     """端到端测试：plan 模式完整流程。"""
@@ -148,6 +150,7 @@ async def test_e2e_plan_mode(worker):
     print(f"[plan 模式] 前 100 字：{full_response[:100]}...")
 
 
+@pytest.mark.e2e
 @pytest.mark.asyncio
 async def test_e2e_skills_mode(worker):
     """端到端测试：skills 模式完整流程。"""

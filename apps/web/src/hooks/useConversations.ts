@@ -10,7 +10,6 @@ export function useConversations() {
   const conversations = useSessionStore((s) => s.conversations);
   const currentSessionId = useSessionStore((s) => s.currentSessionId);
   const loadConversations = useSessionStore((s) => s.loadConversations);
-  const newSessionInStore = useSessionStore((s) => s.newSession);
   const deleteSession = useSessionStore((s) => s.deleteSession);
   const selectSession = useSessionStore((s) => s.selectSession);
   const setCurrentSessionId = useSessionStore((s) => s.setCurrentSessionId);
@@ -33,12 +32,11 @@ export function useConversations() {
     [selectSession, setCurrentSessionId, loadMessages, clearMessages],
   );
 
-  /** 新建会话:生成 UUID + 添加到列表 + 清空消息 */
+  /** 新建会话:清空当前会话和消息,不创建会话记录 */
   const createNewSession = useCallback(() => {
-    const id = crypto.randomUUID();
-    newSessionInStore(id, 'New Session');
+    setCurrentSessionId(null);
     clearMessages();
-  }, [newSessionInStore, clearMessages]);
+  }, [setCurrentSessionId, clearMessages]);
 
   return {
     conversations,
