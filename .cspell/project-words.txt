@@ -1,0 +1,47 @@
+asyncpg, # asyncpg — PostgreSQL 异步驱动
+blpop, # BLPOP — Redis 阻塞弹出命令
+ciphertext, # ciphertext — 密文(密码学术语)
+conv, # conv — conversation 缩写(项目内变量名)
+deepagents, # DeepAgents — 项目使用的 Agent 抽象库
+feishu, # Feishu — 飞书英文名
+httpx, # HTTPX — Python 异步 HTTP 客户端
+langchain, # LangChain — LLM 应用开发框架
+langgraph, # LangGraph — LangChain 之上的状态机式 Agent 编排框架
+lark, # Lark — 飞书国际版
+modelcontextprotocol, # Model Context Protocol — MCP 全称
+monorepo, # monorepo — 单仓多包代码组织方式
+nestjs, # NestJS — 后端 Node.js 框架
+ollama, # Ollama — 本地大模型运行环境
+pgvector, # pgvector — PostgreSQL 的向量检索扩展,用于向量相似度搜索
+preset # preset — 预设配置
+psycopg, # psycopg — PostgreSQL 的 Python 驱动
+pydantic, # Pydantic — Python 数据验证库
+pytest, # pytest — Python 测试框架
+pythonpath, # PYTHONPATH — Python 模块搜索路径环境变量
+shadcn, # shadcn/ui — 基于 Radix UI + Tailwind 的组件库方案
+stdio, # stdio — 标准输入输出(MCP 传输类型)
+tailwindcss, # Tailwind CSS — 原子化 CSS 框架
+tsjest, # ts-jest — TypeScript Jest 转译器
+turborepo, # Turborepo — monorepo 构建编排工具
+typecheck, # 类型检查 — 项目脚本命令名
+venv, # venv — Python 虚拟环境
+vite, # Vite — 前端构建工具
+vitest, # Vitest — Vite 原生测试框架
+vllm # vLLM — 高性能 LLM 推理服务
+zustand # Zustand — 轻量级 React 状态管理库
+
+Feishu
+mkdocstrings
+Qdrant
+Ollama
+structlog
+ollama
+langchain
+PYTHONPATH
+venv
+pytest
+mkdocs
+pyproject
+mypy
+QDRANT
+aivoicedb
