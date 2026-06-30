@@ -9,9 +9,6 @@ OpenAI(远程)生成,根据 worker 配置自动选择。
   2. 取滑动窗口中最近的若干轮对话(短期)
   3. 拼接为 SystemMessage 注入到 LLM 上下文
 """
-# os — 标准库(此处未实际使用,保留以备扩展)
-import os
-
 
 class MemoryManager:
     """混合记忆管理器 — 短期滑动窗口 + 长期向量存储。

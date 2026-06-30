@@ -7,7 +7,7 @@ import { useUIStore } from '../store/uiStore';
 import { useConfigStore } from '../store/configStore';
 import { useSessionStore } from '../store/sessionStore';
 import { chatStream } from '../lib/api';
-import type { Message, StreamChunk, AppMode } from '@agent-platform/shared';
+import type { Message, StreamChunk, AppMode } from '@ai-voice/shared';
 
 /** 根据消息文本生成会话标题(取前 30 字) */
 function makeTitle(text: string): string {

@@ -2,7 +2,7 @@
 // 管理从后端加载的模型配置列表、当前选中配置、下拉框开关
 import { create } from 'zustand';
 import { api } from '../lib/api';
-import type { ModelConfig } from '@agent-platform/shared';
+import type { ModelConfig } from '@ai-voice/shared';
 
 const LS_SELECTED_CONFIG = 'agent_platform_selected_config';
 

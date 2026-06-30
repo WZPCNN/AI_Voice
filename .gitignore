@@ -43,3 +43,10 @@ __pycache__/
 !.vscode/settings.json
 
 # 锁文件（uv.lock 应提交以保证可复现构建）
+
+# 文档构建产物
+apps/web/storybook-static/
+apps/api-server/docs/
+packages/shared/docs/
+agents/site/
+site/

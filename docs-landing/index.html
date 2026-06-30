@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AI Voice 文档中心</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+    }
+    
+    .container {
+      max-width: 1200px;
+      width: 100%;
+    }
+    
+    .header {
+      text-align: center;
+      color: white;
+      margin-bottom: 60px;
+    }
+    
+    .header h1 {
+      font-size: 3rem;
+      font-weight: 700;
+      margin-bottom: 16px;
+      text-shadow: 0 2px 10px rgba(0,0,0,0.2);
+    }
+    
+    .header p {
+      font-size: 1.25rem;
+      opacity: 0.95;
+    }
+    
+    .cards {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 30px;
+      margin-bottom: 40px;
+    }
+    
+    .card {
+      background: white;
+      border-radius: 16px;
+      padding: 32px;
+      box-shadow: 0 10px 40px rgba(0,0,0,0.15);
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+      text-decoration: none;
+      color: inherit;
+      display: block;
+    }
+    
+    .card:hover {
+      transform: translateY(-8px);
+      box-shadow: 0 20px 60px rgba(0,0,0,0.25);
+    }
+    
+    .card-icon {
+      width: 64px;
+      height: 64px;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 20px;
+      font-size: 32px;
+    }
+    
+    .card h2 {
+      font-size: 1.5rem;
+      font-weight: 600;
+      margin-bottom: 12px;
+      color: #1a202c;
+    }
+    
+    .card p {
+      color: #4a5568;
+      line-height: 1.6;
+      margin-bottom: 16px;
+    }
+    
+    .card-tag {
+      display: inline-block;
+      padding: 4px 12px;
+      background: #edf2f7;
+      color: #4a5568;
+      border-radius: 20px;
+      font-size: 0.875rem;
+      font-weight: 500;
+    }
+    
+    .footer {
+      text-align: center;
+      color: white;
+      opacity: 0.9;
+      margin-top: 40px;
+    }
+    
+    .footer a {
+      color: white;
+      text-decoration: underline;
+    }
+    
+    @media (max-width: 768px) {
+      .header h1 {
+        font-size: 2rem;
+      }
+      
+      .header p {
+        font-size: 1rem;
+      }
+      
+      .cards {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="header">
+      <h1>AI Voice 文档中心</h1>
+      <p>智能语音助手平台 - 完整技术文档</p>
+    </div>
+    
+    <div class="cards">
+      <a href="./storybook/" class="card">
+        <div class="card-icon">📚</div>
+        <h2>Storybook</h2>
+        <p>前端组件库交互式文档，可视化浏览和测试所有 UI 组件</p>
+        <span class="card-tag">React 组件</span>
+      </a>
+      
+      <a href="./typedoc-api/" class="card">
+        <div class="card-icon">🔧</div>
+        <h2>API Server 文档</h2>
+        <p>后端 API 服务技术文档，包含所有模块、服务和控制器的详细说明</p>
+        <span class="card-tag">NestJS 11</span>
+      </a>
+      
+      <a href="./typedoc-shared/" class="card">
+        <div class="card-icon">🔗</div>
+        <h2>Shared 类型文档</h2>
+        <p>共享 TypeScript 类型定义，前后端统一的数据结构规范</p>
+        <span class="card-tag">TypeScript 6</span>
+      </a>
+      
+      <a href="./compodoc/" class="card">
+        <div class="card-icon">🏗️</div>
+        <h2>架构图</h2>
+        <p>后端服务架构可视化，模块依赖关系和组件结构图</p>
+        <span class="card-tag">Compodoc</span>
+      </a>
+      
+      <a href="./python/" class="card">
+        <div class="card-icon">🤖</div>
+        <h2>Python Agent 文档</h2>
+        <p>智能体引擎完整文档，包含 Worker、Runner、Orchestrator 等核心组件</p>
+        <span class="card-tag">LangGraph + Qdrant</span>
+      </a>
+    </div>
+    
+    <div class="footer">
+      <p>
+        <a href="https://github.com/your-org/ai-voice" target="_blank">GitHub 仓库</a> | 
+        <a href="https://github.com/your-org/ai-voice/blob/main/README.md" target="_blank">项目 README</a> | 
+        <a href="https://github.com/your-org/ai-voice/blob/main/CONTRIBUTING.md" target="_blank">贡献指南</a>
+      </p>
+      <p style="margin-top: 16px; font-size: 0.875rem;">
+        文档由 GitHub Actions 自动构建并部署
+      </p>
+    </div>
+  </div>
+</body>
+</html>

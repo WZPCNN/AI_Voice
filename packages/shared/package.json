@@ -1,5 +1,5 @@
 {
-  "name": "@agent-platform/shared",
+  "name": "@ai-voice/shared",
   "version": "1.0.0",
   "private": true,
   "type": "module",
@@ -10,9 +10,12 @@
   "scripts": {
     "build": "tsc",
     "typecheck": "tsc --noEmit",
-    "lint": "eslint src/"
+    "lint": "eslint src/",
+    "docs:typedoc": "typedoc",
+    "docs": "pnpm docs:typedoc"
   },
   "devDependencies": {
+    "typedoc": "^0.28.19",
     "typescript": "6.0.3"
   }
 }

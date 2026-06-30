@@ -4,7 +4,7 @@
 import { useMemo } from 'react';
 import { useUIStore } from '../store/uiStore';
 import { COMMANDS, type CommandItem } from '../components/slashCommands';
-import type { AppMode } from '@agent-platform/shared';
+import type { AppMode } from '@ai-voice/shared';
 
 /** 命令 ID 到模式的映射 */
 const CMD_MODE_MAP: Record<string, AppMode> = {

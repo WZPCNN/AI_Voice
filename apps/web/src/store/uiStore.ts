@@ -1,7 +1,7 @@
 // uiStore — UI 交互状态管理
 // 管理工作模式、斜杠命令面板、图片上传、Agent 折叠状态
 import { create } from 'zustand';
-import type { AppMode } from '@agent-platform/shared';
+import type { AppMode } from '@ai-voice/shared';
 
 interface UIState {
   modes: AppMode[];

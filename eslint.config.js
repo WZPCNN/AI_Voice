@@ -1,7 +1,7 @@
 // 根 ESLint Flat Config — 供整个 monorepo 共享
-// 基础配置来自 @agent-platform/eslint-config,React 配置仅应用于 apps/web
+// 基础配置来自 @ai-voice/eslint-config,React 配置仅应用于 apps/web
 // 文档:https://eslint.org/docs/latest/use/configure/configuration-files
-import baseConfig, { reactConfig } from '@agent-platform/eslint-config/base';
+import baseConfig, { reactConfig } from '@ai-voice/eslint-config/base';
 
 export default [
   // 1. 全局忽略:构建产物与依赖目录

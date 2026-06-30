@@ -15,7 +15,7 @@ import { useSessionStore } from '../store/sessionStore';
 import { MODE_LABELS } from '../components/slashCommands';
 import MessageList from '../chat/MessageList';
 import ChatInput from '../chat/ChatInput';
-import type { AppMode } from '@agent-platform/shared';
+import type { AppMode } from '@ai-voice/shared';
 
 export default function ChatPage() {
   const navigate = useNavigate();

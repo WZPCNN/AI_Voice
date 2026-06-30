@@ -12,7 +12,7 @@ import asyncio
 # json — 标准库,用于 chunk 序列化
 import json
 # AsyncIterator — 异步迭代器类型注解
-from typing import AsyncIterator
+from collections.abc import AsyncIterator
 # TaskDecomposer — 任务分解器
 from decomposer import TaskDecomposer
 # AgentRunner — ReAct Agent 运行器

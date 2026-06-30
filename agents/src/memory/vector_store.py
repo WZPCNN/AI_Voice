@@ -12,7 +12,7 @@ Qdrant 是开源向量数据库,支持本地或云端部署。
 import os
 # datetime — 标准库,记录时间戳
 # timezone, UTC — Python 3.11+ 推荐的时区表示
-from datetime import datetime, timezone, UTC
+from datetime import datetime, UTC
 # AsyncQdrantClient — Qdrant 的异步客户端
 # models — Qdrant 的数据模型(VectorParams、PointStruct、Filter 等)
 from qdrant_client import AsyncQdrantClient, models

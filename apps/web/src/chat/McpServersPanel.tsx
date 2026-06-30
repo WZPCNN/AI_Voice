@@ -3,7 +3,7 @@
 import { memo, useState, useEffect } from 'react';
 import { Network, Settings, Circle } from 'lucide-react';
 import { api } from '../lib/api';
-import type { McpServerConfig } from '@agent-platform/shared';
+import type { McpServerConfig } from '@ai-voice/shared';
 
 function McpServersPanel({ onNavigateSettings }: { onNavigateSettings: () => void }) {
   const [servers, setServers] = useState<McpServerConfig[]>([]);

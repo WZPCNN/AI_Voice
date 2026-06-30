@@ -1,8 +1,4 @@
-import {
-  Injectable,
-  UnauthorizedException,
-  ConflictException,
-} from '@nestjs/common';
+import { Injectable, UnauthorizedException, ConflictException } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import * as bcrypt from 'bcryptjs';
 import { PrismaService } from '../../prisma/prisma.service';
@@ -59,7 +55,8 @@ export class AuthService {
   }
 
   private stripPassword(user: User): SafeUser {
-    const { password: _, ...rest } = user;
+    const { password, ...rest } = user;
+    void password;
     return rest;
   }
 }

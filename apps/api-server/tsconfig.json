@@ -10,8 +10,6 @@
     "moduleResolution": "nodenext",
     "types": ["node"],
     "emitDecoratorMetadata": true,
-    "declaration": true,
-    "sourceMap": true,
     "esModuleInterop": true,
     "skipLibCheck": true
   },

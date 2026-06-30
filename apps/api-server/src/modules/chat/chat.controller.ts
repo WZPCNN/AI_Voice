@@ -65,7 +65,7 @@ export class ChatController {
     let apiKey: string | undefined;
     let baseUrl: string | undefined;
 
-    let config = null;
+    let config: Awaited<ReturnType<ModelConfigService['getByIdForChat']>> = null;
     if (data.configId) {
       config = await this.modelConfigService.getByIdForChat(userId, data.configId);
     }

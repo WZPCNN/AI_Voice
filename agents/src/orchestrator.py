@@ -20,7 +20,7 @@ import json
 # re — 标准库,正则表达式(用于语义重叠检测)
 import re
 # AsyncIterator — 异步迭代器类型注解
-from typing import AsyncIterator
+from collections.abc import AsyncIterator
 # AgentRunner — ReAct Agent 运行器
 from runner import AgentRunner
 # PlanExecutor — 计划执行器(子智能体复用)
@@ -239,8 +239,8 @@ class MultiAgentOrchestrator:
                 logger.info("parallel_execution", depth=depth, names=names)
 
                 # 先推送所有 agent_start / step_start 事件
-                for a in batch:
-                    idx = areas.index(a)
+                for idx in wave:
+                    a = areas[idx]
                     yield _ev("agent_start", agent=a["name"], name=a["name"],
                               color=a.get("color", "#6366F1"))
                     yield _ev("step_start", index=idx, step=a["description"], agent=a["name"])
@@ -282,8 +282,8 @@ class MultiAgentOrchestrator:
                         done = sum(1 for t in tasks if t.done())
 
                 # 推送所有 agent_end / step_complete 事件
-                for a in batch:
-                    idx = areas.index(a)
+                for idx in wave:
+                    a = areas[idx]
                     yield _ev("step_complete", index=idx, agent=a["name"])
                     yield _ev("agent_end", agent=a["name"])
 
@@ -443,14 +443,15 @@ class MultiAgentOrchestrator:
                     )
 
         # ── 检查3:语义重叠(2-gram 词级相似度) ────────────────────────
+        def tokens(s: str) -> set[str]:
+            """中文 2-gram 分词(避免字符级 false positive)"""
+            s = re.sub(r'\s+', '', s)
+            return {s[k:k+2] for k in range(len(s) - 1)}
+
         for i in range(len(sys_prompts)):
             for j in range(i + 1, len(sys_prompts)):
                 if not sys_prompts[i] or not sys_prompts[j]:
                     continue
-                # 中文 2-gram 分词(避免字符级 false positive)
-                def tokens(s):
-                    s = re.sub(r'\s+', '', s)
-                    return {s[k:k+2] for k in range(len(s) - 1)}
                 words_i = tokens(sys_prompts[i])
                 words_j = tokens(sys_prompts[j])
                 if words_i and words_j:
@@ -466,10 +467,6 @@ class MultiAgentOrchestrator:
                         )
 
         return issues
-
-    def _extract_json(self, text: str) -> dict:
-        """从 LLM 输出提取 JSON(委托给共享工具)。"""
-        return extract_json(text)
 
     # ── 辅助方法 ────────────────────────────────────────────────────────
     def _upstream(

@@ -1,5 +1,5 @@
 // Jest 配置 — api-server 单元测试
-// 使用 ts-jest 转译 TypeScript,通过 tsconfig.spec.json 覆盖模块解析为 commonjs
+// 使用 ts-jest 转译 TypeScript,内联 compilerOptions 覆盖模块解析为 commonjs
 // shared 包通过 moduleNameMapper 指向源码,无需预先构建
 /** @type {import('jest').Config} */
 module.exports = {
@@ -10,9 +10,30 @@ module.exports = {
   moduleFileExtensions: ['ts', 'js', 'json'],
   setupFiles: ['<rootDir>/jest.setup.ts'],
   moduleNameMapper: {
-    '^@agent-platform/shared$': '<rootDir>/../../packages/shared/src/index.ts',
+    '^@ai-voice/shared$': '<rootDir>/../../packages/shared/src/index.ts',
   },
   transform: {
-    '^.+\\.ts$': ['ts-jest', { tsconfig: 'tsconfig.spec.json' }],
+    '^.+\\.ts$': [
+      'ts-jest',
+      {
+        tsconfig: {
+          strict: true,
+          target: 'ES2023',
+          module: 'commonjs',
+          moduleResolution: 'node',
+          lib: ['ES2023'],
+          experimentalDecorators: true,
+          emitDecoratorMetadata: true,
+          esModuleInterop: true,
+          skipLibCheck: true,
+          isolatedModules: false,
+          types: ['jest', 'node'],
+          baseUrl: '.',
+          paths: {
+            '@ai-voice/shared': ['../../packages/shared/src/index.ts'],
+          },
+        },
+      },
+    ],
   },
 };

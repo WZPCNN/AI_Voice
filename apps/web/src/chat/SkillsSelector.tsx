@@ -4,7 +4,7 @@ import { memo, useState, useEffect } from 'react';
 import { Sparkles, ChevronDown } from 'lucide-react';
 import { api } from '../lib/api';
 import { useUIStore } from '../store/uiStore';
-import type { SkillInfo } from '@agent-platform/shared';
+import type { SkillInfo } from '@ai-voice/shared';
 
 function SkillsSelector() {
   const [skills, setSkills] = useState<SkillInfo[]>([]);

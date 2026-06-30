@@ -4,15 +4,13 @@
 并提供按名称筛选工具的工具函数 get_tools_by_name。
 langgraph 的 create_react_agent 会自动识别这些工具并通过函数调用机制触发。
 """
-# typing.Any — 类型注解,表示任意类型
-from typing import Any
 # pydantic.BaseModel — 数据模型基类,用于定义工具输入参数 schema
 # pydantic.Field — 字段定义,可附加 description 供 LLM 理解参数含义
 from pydantic import BaseModel, Field
 # langchain_core.tools.tool — 装饰器,将函数转换为 LangChain Tool 对象
 from langchain_core.tools import tool
 # datetime — 标准库,用于获取当前时间
-import datetime
+from datetime import datetime
 
 
 class CalculatorInput(BaseModel):
@@ -61,9 +59,9 @@ def get_current_time() -> str:
     无参数工具,返回 ISO 8601 格式的时间字符串,
     如 "2026-06-29T14:30:00.123456"。
     """
-    # datetime.datetime.now() — 当前本地时间
+    # datetime.now() — 当前本地时间
     # .isoformat() — 转为 ISO 8601 字符串
-    return datetime.datetime.now().isoformat()
+    return datetime.now().isoformat()
 
 
 # 内置工具列表 — 所有可用的工具在此注册

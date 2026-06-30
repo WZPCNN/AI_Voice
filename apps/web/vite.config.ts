@@ -25,4 +25,45 @@ export default defineConfig({
       '/chat': 'http://localhost:4000',
     },
   },
+  // 构建配置
+  build: {
+    // 代码分割策略
+    rollupOptions: {
+      output: {
+        // 手动分块:将重型第三方库分离(rolldown 需要函数形式)
+        manualChunks(id: string) {
+          if (id.includes('node_modules')) {
+            // React 核心
+            if (
+              id.includes('/react') ||
+              id.includes('/react-dom') ||
+              id.includes('/react-router')
+            ) {
+              return 'react-vendor';
+            }
+            // 编辑器相关
+            if (id.includes('/@tiptap')) {
+              return 'editor-vendor';
+            }
+            // Markdown 渲染
+            if (
+              id.includes('/react-markdown') ||
+              id.includes('/remark') ||
+              id.includes('/rehype')
+            ) {
+              return 'markdown-vendor';
+            }
+            // 图标库
+            if (id.includes('/lucide-react')) {
+              return 'icons-vendor';
+            }
+            // 其他第三方库
+            return 'vendor';
+          }
+        },
+      },
+    },
+    // chunk 大小警告阈值(提高到 600kB)
+    chunkSizeWarningLimit: 600,
+  },
 });

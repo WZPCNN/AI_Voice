@@ -10,7 +10,7 @@ import PlanTemplate from './PlanTemplate';
 // 导入 AgentCard 子组件 — 渲染单个 Agent 卡片
 import AgentCard from './AgentCard';
 // 导入 PlanStep 类型
-import type { PlanStep } from '@agent-platform/shared';
+import type { PlanStep } from '@ai-voice/shared';
 
 /**
  * COLORS — 多智能体卡片的颜色循环池

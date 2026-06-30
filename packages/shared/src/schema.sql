@@ -7,6 +7,8 @@ CREATE TABLE users (
   id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
   name VARCHAR(255) NOT NULL,
   email VARCHAR(255) UNIQUE NOT NULL,
+  password VARCHAR(255),
+  role VARCHAR(20) NOT NULL DEFAULT 'user',
   avatar_url TEXT,
   created_at TIMESTAMPTZ NOT NULL DEFAULT now(),
   updated_at TIMESTAMPTZ NOT NULL DEFAULT now()
@@ -17,7 +19,7 @@ CREATE TABLE sessions (
   user_id UUID NOT NULL REFERENCES users(id) ON DELETE CASCADE,
   title VARCHAR(500) NOT NULL DEFAULT 'New Session',
   model_id VARCHAR(100) NOT NULL DEFAULT 'gpt-4o',
-  mode VARCHAR(50) NOT NULL DEFAULT 'execute' CHECK (mode IN ('plan', 'execute')),
+  mode VARCHAR(50) NOT NULL DEFAULT 'execute',
   context_summary TEXT,
   metadata JSONB DEFAULT '{}',
   created_at TIMESTAMPTZ NOT NULL DEFAULT now(),
@@ -54,3 +56,19 @@ INSERT INTO users (id, name, email) VALUES ('00000000-0000-0000-0000-00000000000
 
 CREATE INDEX idx_messages_session ON messages(session_id, created_at);
 CREATE INDEX idx_sessions_user ON sessions(user_id, updated_at DESC);
+
+-- MCP 服务器配置表 — 用户可配置外部 Model Context Protocol 服务器
+CREATE TABLE mcp_servers (
+  id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+  user_id UUID NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+  name VARCHAR(255) NOT NULL,
+  transport VARCHAR(20) NOT NULL DEFAULT 'stdio',
+  command TEXT,
+  url TEXT,
+  env JSONB,
+  is_active BOOLEAN NOT NULL DEFAULT true,
+  created_at TIMESTAMPTZ NOT NULL DEFAULT now(),
+  updated_at TIMESTAMPTZ NOT NULL DEFAULT now()
+);
+
+CREATE INDEX idx_mcp_servers_user ON mcp_servers(user_id);

@@ -3,7 +3,7 @@
 import { memo, useEffect, useRef } from 'react';
 import { ChevronDown, Plus } from 'lucide-react';
 import { useConfigStore } from '../store/configStore';
-import type { ModelConfig } from '@agent-platform/shared';
+import type { ModelConfig } from '@ai-voice/shared';
 
 interface ModelSelectorProps {
   onAddModel: () => void;

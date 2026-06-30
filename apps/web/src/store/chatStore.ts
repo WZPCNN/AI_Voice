@@ -2,7 +2,7 @@
 // 管理消息列表、计划步骤、Agent 状态、流式回复
 // processChunk 是核心:处理 SSE 流式数据块,更新对应 UI 状态
 import { create } from 'zustand';
-import type { Message, PlanStep, AgentInfo, ChatChunk } from '@agent-platform/shared';
+import type { Message, PlanStep, AgentInfo, ChatChunk } from '@ai-voice/shared';
 
 interface ChatState {
   messages: Message[];

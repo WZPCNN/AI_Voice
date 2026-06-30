@@ -24,8 +24,6 @@ import os
 import shlex
 # AsyncExitStack — 标准库,管理多个异步上下文的统一退出
 from contextlib import AsyncExitStack
-# Optional — 类型注解,表示可选类型
-from typing import Optional
 # pydantic.create_model — 动态创建 Pydantic 模型(从 JSON Schema)
 # pydantic.Field — 字段定义,附加 description
 from pydantic import create_model, Field
@@ -254,8 +252,8 @@ class McpClientManager:
                 # 必填字段:无默认值
                 fields[prop_name] = (py_type, Field(description=desc))
             else:
-                # 可选字段:默认 None,类型用 Optional 包裹
-                fields[prop_name] = (Optional[py_type], Field(default=None, description=desc))
+                # 可选字段:默认 None,使用 Python 3.10+ 联合类型语法
+                fields[prop_name] = (py_type | None, Field(default=None, description=desc))
         # create_model 动态创建 Pydantic 模型类
         # 类名格式:{tool_name}_Input,避免冲突
         return create_model(f"{tool_name}_Input", **fields)  # type: ignore[arg-type]

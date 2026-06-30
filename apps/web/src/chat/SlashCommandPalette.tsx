@@ -2,7 +2,7 @@
 // 显示过滤后的命令列表,支持键盘导航高亮和鼠标点击
 import { memo } from 'react';
 import { type CommandItem } from '../components/slashCommands';
-import type { AppMode } from '@agent-platform/shared';
+import type { AppMode } from '@ai-voice/shared';
 
 interface SlashCommandPaletteProps {
   query: string;

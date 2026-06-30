@@ -9,8 +9,7 @@
 # from __future__ annotations — 启用 PEP 563 延迟注解求值
 # 允许在类型注解中使用尚未定义的类名
 from __future__ import annotations
-# pydantic.BaseModel / Field — 数据模型与字段定义
-from pydantic import BaseModel, Field
+# pydantic — 数据验证库(本模块未使用,保留以备扩展)
 # LangChain 消息类型
 from langchain_core.messages import SystemMessage, HumanMessage
 # create_model — 模型工厂
@@ -25,34 +24,7 @@ from logger import get_logger
 logger = get_logger(__name__)
 
 
-# ── 批量架构师提示词(预留,实际未使用,改用单任务逐个生成) ─────────────
-ARCHITECT_PROMPT = """你是提示词架构师。根据给定的子任务列表，为每个子任务设计：
-1. refined_name：一个独特的、能区分角色的中文名称（2-4字）
-2. system_prompt：该子智能体的系统提示词，必须严格聚焦该子任务，不得涉及其他子任务
-3. constraint_prompt：该子智能体的强制约束提示词
 
-设计原则：
-- 每个 system_prompt 必须明确该子智能体「只负责什么」，不能让不同子智能体有重叠职责
-- system_prompt 中禁止出现「原任务」「用户问题」「整体需求」等暗示存在更大任务的词汇
-- system_prompt 必须自包含，不依赖上下文或隐含信息
-- constraint_prompt 必须包含：职责边界声明、禁止跨职责回答、仅输出交付物的指令
-- constraint_prompt 必须包含一条自定义的、针对该子任务特点的强制约束
-
-返回 JSON 数组，每个元素包含 refined_name、system_prompt、constraint_prompt。"""
-
-
-class RoleDesign(BaseModel):
-    """单个子智能体的提示词设计方案。
-
-    用于结构化输出 schema(实际未启用,改用纯 LLM + JSON 解析)。
-    """
-    refined_name: str = Field(description="独特的角色中文名称，2-4字")
-    system_prompt: str = Field(description="聚焦该子任务的系统提示词，不得包含原任务引用")
-    constraint_prompt: str = Field(description="强制约束提示词，包含职责边界和禁止跨职责回答")
-
-
-# 重复导入(原代码保留,不影响功能)
-from json_utils import extract_json
 
 # ── 单任务架构师提示词(实际使用) ───────────────────────────────────────
 # 每次只为一个子任务设计提示词,并传入其他子任务名以避免重名
@@ -75,11 +47,6 @@ ARCHITECT_SINGLE_PROMPT = """你是提示词架构师。为以下一个特定子
 - constraint_prompt 必须包含职责边界声明和一条针对该子任务特点的自定义强制约束
 
 返回 JSON，包含 name、subtask、system_prompt、constraint_prompt。"""
-
-
-class RoleDesignResult(BaseModel):
-    """所有子智能体的提示词设计方案(批量模式,实际未使用)。"""
-    roles: list[RoleDesign] = Field(description="与输入子任务一一对应的提示词设计列表")
 
 
 class PromptArchitect:
@@ -112,14 +79,9 @@ class PromptArchitect:
             api_key: API Key
             base_url: 自定义 base URL
         """
-        # 主 LLM(批量模式,实际未使用),temperature=0.3 偏稳定
-        base_llm = create_model(model_provider, model_name, temperature=0.3,
-                                api_key=api_key, base_url=base_url)
-
+        # 单任务 LLM,temperature=0.2 更稳定
         # 使用纯 LLM 调用(不绑定 function calling)
         # 兼容 DeepSeek / thinking 模型等不支持 function calling 的服务
-        self.llm = base_llm
-        # 单任务 LLM,temperature=0.2 更稳定(用于实际的单任务生成)
         self.single_llm = create_model(model_provider, model_name, temperature=0.2,
                                        api_key=api_key, base_url=base_url)
 

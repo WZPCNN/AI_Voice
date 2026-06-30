@@ -4,7 +4,7 @@ import { memo, useMemo } from 'react';
 import { Copy, RefreshCw } from 'lucide-react';
 import ReactMarkdown from 'react-markdown';
 import PlanSection from './PlanSection';
-import type { Message, PlanStep } from '@agent-platform/shared';
+import type { Message, PlanStep } from '@ai-voice/shared';
 
 interface MessageBubbleProps {
   msg: Message;
@@ -40,7 +40,7 @@ function MessageBubble({
     if (hasAgents) return agentNames.length + ' 个智能体协作中...';
     if (hasPlan) return '正在执行计划...';
     return '思考中...';
-  }, [hasAgents, hasAgents, agentNames.length]);
+  }, [hasAgents, hasPlan, agentNames.length]);
 
   // 计划是否全部完成(用于决定是否渲染最终回复)
   const planAllDone = planSteps.every((s) => s.status === 'completed' || s.status === 'failed');

@@ -29,10 +29,11 @@ export default tseslint.config(
     rules: {
       // no-unused-vars — 禁止未使用的变量
       // argsIgnorePattern: "^_" — 以 _ 开头的函数参数允许未使用(常见于回调签名)
+      // varsIgnorePattern: "^_" — 以 _ 开头的局部变量允许未使用(如解构排除字段)
       // ignoreRestSiblings: true — 解构 rest 时,被排除的同级字段允许未使用(如 const { password: _, ...rest } = user)
       '@typescript-eslint/no-unused-vars': [
         'error',
-        { argsIgnorePattern: '^_', ignoreRestSiblings: true },
+        { argsIgnorePattern: '^_', varsIgnorePattern: '^_', ignoreRestSiblings: true },
       ],
       // explicit-function-return-type — 关闭"必须显式标注函数返回类型"
       // 让 TypeScript 自动推断,减少样板代码

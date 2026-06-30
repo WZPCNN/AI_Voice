@@ -45,6 +45,16 @@
       // **/*.test.* — 任意位置的 .test.ts/.test.tsx 等测试文件
       // **/*.spec.* — 任意位置的 .spec.ts/.spec.tsx 等规格测试文件
       "inputs": ["src/**", "test/**", "**/*.test.*", "**/*.spec.*"]
+    },
+    // docs 任务:生成项目文档(Storybook/TypeDoc/Compodoc)
+    "docs": {
+      // 依赖上游包的 build 完成(文档生成可能需要类型信息)
+      "dependsOn": ["^build"],
+      // 文档输出目录,这些目录的内容会被 Turbo 缓存
+      // docs/** — TypeDoc/Compodoc 输出
+      // storybook-static/** — Storybook 静态文件
+      // site/** — MkDocs 输出(Python 文档,但 Python 不在 turbo 体系)
+      "outputs": ["docs/**", "storybook-static/**", "site/**"]
     }
   }
 }

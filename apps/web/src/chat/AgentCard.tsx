@@ -7,7 +7,7 @@ import { memo } from 'react';
 // 导入 PlanTemplate 子组件 — 用于渲染该 Agent 的执行步骤
 import PlanTemplate from './PlanTemplate';
 // 导入 PlanStep 类型 — 描述单个步骤
-import type { PlanStep } from '@agent-platform/shared';
+import type { PlanStep } from '@ai-voice/shared';
 
 /**
  * AgentCardProps — AgentCard 组件的 props 类型

@@ -1,0 +1,14 @@
+{
+  "entryPointStrategy": "expand",
+  "entryPoints": ["src"],
+  "exclude": ["**/*.test.ts", "**/*.spec.ts"],
+  "out": "docs/typedoc",
+  "tsconfig": "tsconfig.json",
+  "githubPages": true,
+  "excludePrivate": true,
+  "excludeProtected": true,
+  "excludeInternal": true,
+  "readme": "none",
+  "name": "AI Voice API Server",
+  "includeVersion": true
+}

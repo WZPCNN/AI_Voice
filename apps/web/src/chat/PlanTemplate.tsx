@@ -10,7 +10,7 @@ import { useState, useEffect, useRef, memo } from 'react';
 // 导入 ReactMarkdown — 将 Markdown 文本渲染为 HTML
 import ReactMarkdown from 'react-markdown';
 // 导入 PlanStep 类型
-import type { PlanStep } from '@agent-platform/shared';
+import type { PlanStep } from '@ai-voice/shared';
 
 /**
  * PlanTemplateProps — PlanTemplate 组件的 props 类型

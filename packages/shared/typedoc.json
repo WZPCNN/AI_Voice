@@ -1,0 +1,11 @@
+{
+  "entryPoints": ["src/index.ts", "src/types/index.ts"],
+  "out": "docs/typedoc",
+  "tsconfig": "tsconfig.json",
+  "githubPages": true,
+  "excludePrivate": true,
+  "excludeProtected": true,
+  "excludeInternal": true,
+  "name": "AI Voice Shared",
+  "includeVersion": true
+}

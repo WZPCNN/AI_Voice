@@ -3,7 +3,7 @@
 // token 持久化到 localStorage,页面刷新后自动恢复
 import { create } from 'zustand';
 import { api } from '../lib/api';
-import type { User } from '@agent-platform/shared';
+import type { User } from '@ai-voice/shared';
 
 const TOKEN_KEY = 'auth_token';
 

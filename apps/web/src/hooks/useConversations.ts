@@ -5,7 +5,7 @@ import { useCallback } from 'react';
 import { useSessionStore } from '../store/sessionStore';
 import { useChatStore } from '../store/chatStore';
 import { api } from '../lib/api';
-import type { Message } from '@agent-platform/shared';
+import type { Message } from '@ai-voice/shared';
 
 export function useConversations() {
   const conversations = useSessionStore((s) => s.conversations);

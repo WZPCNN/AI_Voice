@@ -5,7 +5,7 @@ import { useState, useEffect, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { ArrowLeft, Trash2, Check, Pencil, X, Network } from 'lucide-react';
 import { api } from '../lib/api';
-import type { ModelConfig, McpServerConfig, McpServerPayload } from '@agent-platform/shared';
+import type { ModelConfig, McpServerConfig, McpServerPayload } from '@ai-voice/shared';
 
 type Tab = 'models' | 'mcp';
 
