@@ -23,7 +23,12 @@ export function useConversations() {
       selectSession(id);
       setCurrentSessionId(id);
       try {
-        const msgs = await api.sessions.messages(id);
+        const rawMsgs = await api.sessions.messages(id);
+        // 后端返回 role 为大写(USER/ASSISTANT)，前端需要小写
+        const msgs = rawMsgs.map((m) => ({
+          ...m,
+          role: m.role.toLowerCase() as 'user' | 'assistant' | 'tool' | 'agent',
+        }));
         loadMessages(msgs);
       } catch {
         clearMessages();

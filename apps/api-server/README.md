@@ -6,8 +6,8 @@
 
 - **框架**: NestJS 11.1.27
 - **ORM**: Prisma 7.8.0
-- **数据库**: PostgreSQL 17
-- **缓存/消息队列**: Redis 7
+- **数据库**: PostgreSQL 19
+- **缓存/消息队列**: Redis 8
 - **向量数据库**: Qdrant
 - **认证**: JWT + Passport
 - **WebSocket**: Socket.io 4.8.3

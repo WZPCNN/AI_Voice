@@ -209,16 +209,26 @@ class McpClientManager:
             被 LangChain StructuredTool 调用时,
             kwargs 为 LLM 解析出的参数。
             """
-            result = await session.call_tool(tool_name, kwargs)
-            # MCP 工具返回 content blocks 列表,提取文本
-            texts: list[str] = []
-            for block in (result.content or []):
-                text = getattr(block, "text", None)
-                if text:
-                    texts.append(text)
-                else:
-                    texts.append(str(block))
-            return "\n".join(texts) if texts else ""
+            import asyncio
+            try:
+                # 添加 60 秒超时,避免工具调用无限等待
+                result = await asyncio.wait_for(
+                    session.call_tool(tool_name, kwargs),
+                    timeout=60.0
+                )
+                # MCP 工具返回 content blocks 列表,提取文本
+                texts: list[str] = []
+                for block in (result.content or []):
+                    text = getattr(block, "text", None)
+                    if text:
+                        texts.append(text)
+                    else:
+                        texts.append(str(block))
+                return "\n".join(texts) if texts else ""
+            except asyncio.TimeoutError:
+                return f"工具调用超时(60秒): {tool_name}"
+            except Exception as exc:
+                return f"工具调用失败: {exc}"
 
         # StructuredTool.from_function — 从协程创建结构化工具
         return StructuredTool.from_function(

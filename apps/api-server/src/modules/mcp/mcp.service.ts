@@ -1,5 +1,5 @@
 // McpService — MCP 服务器配置 CRUD + 查询活跃配置(供 ChatService 使用)
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { PrismaService } from '../../prisma/prisma.service';
 import type { CreateMcpServerDto, UpdateMcpServerDto } from './dto/mcp-server.dto';
 
@@ -7,8 +7,18 @@ import type { CreateMcpServerDto, UpdateMcpServerDto } from './dto/mcp-server.dt
 export class McpService {
   constructor(private readonly prisma: PrismaService) {}
 
+  /** 验证用户是否存在 */
+  private async ensureUserExists(userId: string) {
+    const user = await this.prisma.user.findUnique({ where: { id: userId } });
+    if (!user) {
+      throw new NotFoundException('用户不存在，请重新登录');
+    }
+    return user;
+  }
+
   /** 列出当前用户的所有 MCP 服务器 */
   async getAll(userId: string) {
+    await this.ensureUserExists(userId);
     return this.prisma.mcpServer.findMany({
       where: { userId },
       orderBy: { createdAt: 'desc' },
@@ -17,6 +27,7 @@ export class McpService {
 
   /** 创建 MCP 服务器 */
   async create(userId: string, dto: CreateMcpServerDto) {
+    await this.ensureUserExists(userId);
     return this.prisma.mcpServer.create({
       data: {
         userId,

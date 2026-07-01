@@ -37,8 +37,9 @@ export async function apiFetch(path: string, init: RequestInit = {}): Promise<Re
     headers.set('Content-Type', 'application/json');
   }
   const res = await fetch(`${API_URL}${path}`, { ...init, headers });
-  // 401 清除 token 并跳转登录页
-  if (res.status === 401) {
+  const isAuthPath = path.startsWith('/api/auth/login') || path.startsWith('/api/auth/register');
+  // 401 清除 token 并跳转登录页（认证接口本身除外）
+  if (res.status === 401 && !isAuthPath) {
     localStorage.removeItem(TOKEN_KEY);
     window.location.href = '/login';
     throw new Error('登录已过期，请重新登录');

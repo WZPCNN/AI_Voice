@@ -50,3 +50,5 @@ apps/api-server/docs/
 packages/shared/docs/
 agents/site/
 site/
+
+docker/postgres_data/

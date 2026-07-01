@@ -6,12 +6,14 @@ import { useNavigate } from 'react-router-dom';
 import { useEditor, type Editor } from '@tiptap/react';
 import StarterKit from '@tiptap/starter-kit';
 import Placeholder from '@tiptap/extension-placeholder';
+import { LogOut } from 'lucide-react';
 import { useChat } from '../hooks/useChat';
 import { useSlashCommands } from '../hooks/useSlashCommands';
 import { useChatStore } from '../store/chatStore';
 import { useUIStore } from '../store/uiStore';
 import { useConfigStore } from '../store/configStore';
 import { useSessionStore } from '../store/sessionStore';
+import { useAuthStore } from '../store/authStore';
 import { MODE_LABELS } from '../components/slashCommands';
 import MessageList from '../chat/MessageList';
 import ChatInput from '../chat/ChatInput';
@@ -21,6 +23,7 @@ export default function ChatPage() {
   const navigate = useNavigate();
   const { sendMessage, stopGeneration, streaming } = useChat();
   const { handleKeyDown: handleSlashKeyDown } = useSlashCommands();
+  const logout = useAuthStore((s) => s.logout);
 
   // 从 chatStore 读取渲染所需状态
   const messages = useChatStore((s) => s.messages);
@@ -170,12 +173,25 @@ export default function ChatPage() {
     <main className="flex flex-1 flex-col min-w-0 bg-[#FFFFFF]">
       <header className="flex items-center justify-between border-b border-[#EBECF0] h-16 px-6 flex-shrink-0">
         <span className="text-[15px] font-semibold text-[#1A1A2E]">AI Voice Assistant</span>
-        <span className="text-[11px] text-[#999]">
-          {selectedConfig
-            ? `${selectedConfig.modelProvider}/${selectedConfig.modelName}`
-            : '未配置模型'}{' '}
-          · {MODE_LABELS[effectiveMode] ?? effectiveMode}
-        </span>
+        <div className="flex items-center gap-4">
+          <span className="text-[11px] text-[#999]">
+            {selectedConfig
+              ? `${selectedConfig.modelProvider}/${selectedConfig.modelName}`
+              : '未配置模型'}{' '}
+            · {MODE_LABELS[effectiveMode] ?? effectiveMode}
+          </span>
+          <button
+            onClick={() => {
+              logout();
+              navigate('/login');
+            }}
+            className="flex items-center gap-1.5 rounded-lg px-3 py-1.5 text-[12px] text-[#666] hover:bg-[#F5F6FA] hover:text-[#EF4444] transition-all"
+            title="退出登录"
+          >
+            <LogOut size={14} />
+            退出
+          </button>
+        </div>
       </header>
 
       {/* 活跃 Agent 列表:仅多智能体执行时显示 */}

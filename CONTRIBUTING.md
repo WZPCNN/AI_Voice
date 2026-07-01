@@ -10,8 +10,8 @@
 - **pnpm**: 11.9+ (monorepo 包管理器)
 - **Python**: 3.12+ (Agent 引擎)
 - **uv**: 最新版 (Python 包管理器)
-- **PostgreSQL**: 17 (主数据库)
-- **Redis**: 7+ (缓存与消息队列)
+- **PostgreSQL**: 19 (主数据库)
+- **Redis**: 8+ (缓存与消息队列)
 - **Qdrant**: 最新版 (向量数据库)
 
 ### 初始设置

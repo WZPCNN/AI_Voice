@@ -90,6 +90,32 @@ export function useChat() {
       try {
         const controller = new AbortController();
         abortRef.current = controller;
+
+        // 获取活跃的 MCP 服务器配置
+        let mcpServers: Array<{
+          name: string;
+          transport: string;
+          command: string | null;
+          url: string | null;
+          env: Record<string, string> | null;
+        }> = [];
+        if (effectiveMode === 'mcp') {
+          try {
+            const servers = await api.mcpServers.list();
+            mcpServers = servers
+              .filter((s) => s.isActive)
+              .map((s) => ({
+                name: s.name,
+                transport: s.transport,
+                command: s.command ?? null,
+                url: s.url ?? null,
+                env: s.env ?? null,
+              }));
+          } catch {
+            // 获取 MCP 服务器失败时继续执行，不阻塞聊天
+          }
+        }
+
         await chatStream(
           {
             sessionId: sessionId!,
@@ -98,6 +124,7 @@ export function useChat() {
             configId: selectedConfigId ?? undefined,
             images: savedImages,
             skill: effectiveMode === 'skills' ? (selectedSkill ?? undefined) : undefined,
+            mcpServers,
           },
           (chunk) => processChunk(chunk as StreamChunk),
           controller.signal,

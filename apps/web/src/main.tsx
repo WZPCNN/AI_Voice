@@ -10,6 +10,16 @@ import { BrowserRouter } from "react-router-dom";
 import App from "./App";
 // 导入全局样式表(包含 Tailwind 指令和自定义样式)
 import "./index.css";
+// 导入认证 store,用于初始化时验证 token
+import { useAuthStore } from "./store/authStore";
+
+// 应用启动时验证 token 有效性
+// 如果 localStorage 中有 token,调用 /api/auth/me 验证
+// 验证失败会清除 token 并设置 isAuthenticated = false
+const token = localStorage.getItem("auth_token");
+if (token) {
+  useAuthStore.getState().loadMe();
+}
 
 // createRoot — 在 #root DOM 节点上创建 React 根容器
 // document.getElementById("root") — 获取 index.html 中的根 div

@@ -100,4 +100,26 @@ export class SessionService {
       },
     });
   }
+
+  /**
+   * 获取指定会话的所有消息,按创建时间升序。
+   * 用于前端加载历史聊天记录。
+   *
+   * @param userId 用户 ID(用于权限校验)
+   * @param sessionId 会话 ID
+   */
+  async getMessages(userId: string, sessionId: string) {
+    // 先校验会话是否属于该用户
+    const session = await this.prisma.session.findFirst({
+      where: { id: sessionId, userId },
+      select: { id: true },
+    });
+    if (!session) {
+      return [];
+    }
+    return this.prisma.message.findMany({
+      where: { sessionId },
+      orderBy: { createdAt: 'asc' },
+    });
+  }
 }

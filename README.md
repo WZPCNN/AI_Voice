@@ -100,7 +100,7 @@ cd apps/web && pnpm dev
 - 前端: React 19 + TypeScript 6 + Vite 8 + TailwindCSS 4 + Zustand 5
 - 网关: NestJS 11 + WebSocket + Redis pub/sub
 - Agent: Python 3.14 + LangChain 1.3 + LangGraph 1.2 + Qdrant + sentence-transformers
-- 基础设施: PostgreSQL 17 + Qdrant + Redis 7 + Turborepo + pnpm 11
+- 基础设施: PostgreSQL 19 + Qdrant + Redis 8 + Turborepo + pnpm 11
 - 文档: Storybook 9 + TypeDoc + Compodoc + MkDocs Material
 
 ## 文档

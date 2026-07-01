@@ -11,6 +11,7 @@ interface AuthState {
   token: string | null;
   user: User | null;
   isAuthenticated: boolean;
+  isLoading: boolean;
   login: (token: string, user: User) => void;
   logout: () => void;
   loadMe: () => Promise<void>;
@@ -19,24 +20,25 @@ interface AuthState {
 export const useAuthStore = create<AuthState>((set) => ({
   token: localStorage.getItem(TOKEN_KEY),
   user: null,
-  isAuthenticated: !!localStorage.getItem(TOKEN_KEY),
+  isAuthenticated: false, // 初始不认证，需要验证 token
+  isLoading: !!localStorage.getItem(TOKEN_KEY), // 有 token 时需要验证
 
   login: (token, user) => {
     localStorage.setItem(TOKEN_KEY, token);
-    set({ token, user, isAuthenticated: true });
+    set({ token, user, isAuthenticated: true, isLoading: false });
   },
 
   logout: () => {
     localStorage.removeItem(TOKEN_KEY);
-    set({ token: null, user: null, isAuthenticated: false });
+    set({ token: null, user: null, isAuthenticated: false, isLoading: false });
   },
 
   loadMe: async () => {
     try {
       const user = await api.auth.me();
-      set({ user });
+      set({ user, isAuthenticated: true, isLoading: false });
     } catch {
-      set({ token: null, user: null, isAuthenticated: false });
+      set({ token: null, user: null, isAuthenticated: false, isLoading: false });
       localStorage.removeItem(TOKEN_KEY);
     }
   },

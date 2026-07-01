@@ -39,4 +39,9 @@ export class SessionController {
     const ok = await this.service.delete(user.id, id);
     return { success: ok };
   }
+
+  @Get(':id/messages')
+  async getMessages(@CurrentUser() user: { id: string }, @Param('id') id: string) {
+    return this.service.getMessages(user.id, id);
+  }
 }
